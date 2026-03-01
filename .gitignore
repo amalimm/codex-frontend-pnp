@@ -1,0 +1,15 @@
+# Codex runtime/private files - never commit
+.codex/auth.json
+.codex/history.jsonl
+.codex/models_cache.json
+.codex/state_*.sqlite
+.codex/state_*.sqlite-shm
+.codex/state_*.sqlite-wal
+.codex/sessions/
+.codex/tmp/
+.codex/log/
+.codex/shell_snapshots/
+.codex/archived_sessions/
+
+# OS/editor
+.DS_Store
