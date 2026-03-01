@@ -1,66 +1,71 @@
 # codex-frontend-pnp
 
-Portable Codex setup for frontend engineers. Clone this repo on a new machine and bootstrap your `.codex` workspace quickly with reusable skills, rules, and a safe config template.
+Portable Codex frontend setup. Clone this repo and start with repo-local skills using the official Codex project structure.
 
-## What This Repo Includes
+Checked against official docs on March 1, 2026.
 
-- Shareable `.codex` starter files
-- 12 frontend-oriented local skills
-- Command allowlist baseline in `.codex/rules/default.rules`
-- Sanitized config template in `.codex/config.template.toml`
-- Skill documentation in `.codex/skills/README.md`
+## Official Structure
 
-## What This Repo Intentionally Excludes
+This repo follows the Codex skill layout:
 
-- Secrets and tokens (`auth.json`, API keys)
-- Session/history/state databases
-- Machine-specific trusted path entries
+- `.agents/skills/<skill-name>/SKILL.md` (required)
+- Optional skill folders: `references/`, `scripts/`, `assets/`
 
-## Quick Start (New Machine)
+Template user config is kept separately:
 
-1. Clone this repository.
-2. Create a backup of your existing local Codex folder (if any):
+- `.codex/config.template.toml` (safe template)
+- `.codex/rules/default.rules` (optional local approval baseline)
+
+## Included Skills
+
+- `context7-library-refs`: doc-grounded library/framework API usage
+- `conventional-commits`: structured Conventional Commits
+- `frontend-testing`: Vitest + RTL testing workflows
+- `general-coding-standards`: baseline coding quality standards
+- `payload-cms`: Payload CMS implementation/debug patterns
+- `planning-with-files`: file-based planning for complex tasks
+- `project-stack-selector`: modern React/TS stack selection
+- `react-best-practices`: Vercel React/Next performance rules
+- `react-code-fix-linter`: lint/format cleanup flow
+- `seo-review`: SEO audits for docs/content pages
+- `ui-ux-pro-max`: UI/UX design/build guidance
+- `web-design-guidelines`: UI/accessibility guideline review
+
+## Quick Start
+
+1. Clone the repo and work from this project.
+2. Repo-local skills under `.agents/skills` are available automatically in this project context.
+3. (Optional) copy template config into your user config:
 
 ```bash
-cp -R ~/.codex ~/.codex.backup.$(date +%Y%m%d-%H%M%S)
-```
-
-3. Copy starter files from this repo:
-
-```bash
-mkdir -p ~/.codex
-cp -R .codex/skills ~/.codex/
 mkdir -p ~/.codex/rules
 cp .codex/rules/default.rules ~/.codex/rules/default.rules
 cp .codex/config.template.toml ~/.codex/config.toml
 ```
 
-If you already have `~/.codex/config.toml`, merge manually instead of overwriting it.
+If `~/.codex/config.toml` already exists, merge manually instead of overwriting.
 
-4. Set secrets/environment variables (for example Context7):
+4. Set required environment values (example):
 
 ```bash
 export CONTEXT7_API_KEY="<your-context7-key>"
 ```
 
-5. Restart Codex.
+## Frontend Add-Ons (Curated Skills)
 
-## Recommended Optional Curated Skills (Checked March 1, 2026)
+Recommended installs from `openai/skills` curated catalog:
 
-These are from the current `openai/skills` curated list and are especially useful for frontend workflows:
+- `playwright`
+- `figma`
+- `figma-implement-design`
+- `gh-fix-ci`
+- `gh-address-comments`
+- `sentry`
+- `linear`
+- `openai-docs`
+- Pick one deploy skill: `vercel-deploy` or `netlify-deploy` or `cloudflare-deploy`
 
-- `playwright`: browser automation/e2e flows
-- `figma`: design context retrieval
-- `figma-implement-design`: design-to-code handoff
-- `vercel-deploy` (or `netlify-deploy` / `cloudflare-deploy`): deployment workflows
-- `sentry`: error/performance observability
-- `openai-docs`: official OpenAI docs grounding
-- `gh-fix-ci` and `gh-address-comments`: CI + PR feedback loops
-- `screenshot`: visual capture/reporting in debugging flows
-
-Note: the `skills/.experimental` endpoint returned 404 at check time (March 1, 2026).
-
-Install curated skills with Codex `skill-installer`, for example:
+Install examples:
 
 ```text
 $skill-installer playwright
@@ -68,17 +73,41 @@ $skill-installer figma
 $skill-installer sentry
 ```
 
-## Deferred Integration
+## MCP Recommendations (Frontend)
 
-- Pencil MCP is intentionally skipped for now and can be added later after provenance verification.
+Core:
 
-## Extra Research
+- `context7`: `codex mcp add context7 -- npx -y @upstash/context7-mcp`
+- `playwright`: `codex mcp add playwright -- npx @playwright/mcp@latest`
+- `chrome-devtools`: `codex mcp add chrome-devtools -- npx -y chrome-devtools-mcp@latest`
+- `figma` (remote): `codex mcp add figma --url https://mcp.figma.com/mcp`
+- `linear` (remote): `codex mcp add linear --url https://mcp.linear.app/mcp`
 
-- Frontend skills and MCP stack recommendations: `FRONTEND_SKILLS_MCP_STACK.md`
+Optional:
 
-## Repo Layout
+- Storybook MCP (`@storybook/addon-mcp`, endpoint `http://localhost:6006/mcp`)
+- Netlify MCP (`codex mcp add netlify -- npx -y @netlify/mcp`)
+- Sentry MCP
+- GitHub MCP
 
+Pencil MCP is intentionally skipped for now.
+
+## Project Layout
+
+- `.agents/skills/`
 - `.codex/config.template.toml`
 - `.codex/rules/default.rules`
-- `.codex/skills/`
-- `.codex/skills/README.md`
+- `.gitignore`
+- `README.md`
+
+## Sources
+
+- https://developers.openai.com/codex/skills
+- https://developers.openai.com/codex/mcp/
+- https://github.com/openai/skills/tree/main/skills/.curated
+- https://github.com/microsoft/playwright-mcp
+- https://github.com/ChromeDevTools/chrome-devtools-mcp
+- https://github.com/storybookjs/mcp
+- https://developers.figma.com/docs/figma-mcp-server
+- https://linear.app/integrations/codex-mcp
+- https://docs.netlify.com/welcome/build-with-ai/netlify-mcp-server/
