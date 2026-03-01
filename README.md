@@ -72,6 +72,10 @@ $skill-installer sentry
 
 - Pencil MCP is intentionally skipped for now and can be added later after provenance verification.
 
+## Extra Research
+
+- Frontend skills and MCP stack recommendations: `FRONTEND_SKILLS_MCP_STACK.md`
+
 ## Repo Layout
 
 - `.codex/config.template.toml`
