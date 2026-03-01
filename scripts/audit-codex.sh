@@ -8,7 +8,7 @@ REPO_ROOT="$(cd -- "$SCRIPT_DIR/.." && pwd)"
 TARGET_CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
 TARGET_CONFIG="$TARGET_CODEX_HOME/config.toml"
 TARGET_RULES="$TARGET_CODEX_HOME/rules/default.rules"
-REPO_SKILLS_DIR="$REPO_ROOT/.agents/skills"
+REPO_SKILLS_DIR="$REPO_ROOT/.codex/skills"
 
 failures=0
 
@@ -67,7 +67,7 @@ if [[ -d "$REPO_SKILLS_DIR" ]]; then
 fi
 
 # Secret scan on tracked setup files.
-if rg -n '(ctx7sk-|sk-[A-Za-z0-9]{20,}|API_KEY\s*=\s*"[^$][^"]+")' "$REPO_ROOT/.codex" "$REPO_ROOT/.agents" >/dev/null 2>&1; then
+if rg -n '(ctx7sk-|sk-[A-Za-z0-9]{20,}|API_KEY\s*=\s*"[^$][^"]+")' "$REPO_ROOT/.codex" >/dev/null 2>&1; then
   fail "Potential hardcoded secrets found in repo setup files"
 else
   pass "No hardcoded API key patterns detected in repo setup files"

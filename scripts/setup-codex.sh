@@ -7,7 +7,7 @@ REPO_ROOT="$(cd -- "$SCRIPT_DIR/.." && pwd)"
 
 SRC_CONFIG="$REPO_ROOT/.codex/config.toml"
 SRC_RULES="$REPO_ROOT/.codex/rules/default.rules"
-SRC_SKILLS_DIR="$REPO_ROOT/.agents/skills"
+SRC_SKILLS_DIR="$REPO_ROOT/.codex/skills"
 
 TARGET_CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
 TARGET_CONFIG="$TARGET_CODEX_HOME/config.toml"
@@ -98,6 +98,7 @@ run_cmd cp -a "$SRC_CONFIG" "$TARGET_CONFIG"
 run_cmd cp -a "$SRC_RULES" "$TARGET_RULES"
 
 echo "Installing managed skills"
+shopt -s dotglob nullglob
 for skill_dir in "$SRC_SKILLS_DIR"/*; do
   [[ -d "$skill_dir" ]] || continue
   skill_name="$(basename "$skill_dir")"
@@ -106,6 +107,7 @@ for skill_dir in "$SRC_SKILLS_DIR"/*; do
   run_cmd cp -a "$skill_dir" "$target_skill"
   echo "  - $skill_name"
 done
+shopt -u dotglob nullglob
 
 if [[ -z "${CONTEXT7_API_KEY:-}" ]]; then
   cat <<'NOTE'

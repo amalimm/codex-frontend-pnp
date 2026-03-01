@@ -1,15 +1,21 @@
 # Codex runtime/private files - never commit
 .codex/auth.json
+.codex/.personality_migration
 .codex/history.jsonl
 .codex/models_cache.json
+.codex/config.toml.bak
+.codex/version.json
+.codex/test_write
 .codex/state_*.sqlite
 .codex/state_*.sqlite-shm
 .codex/state_*.sqlite-wal
+.codex/backups/
 .codex/sessions/
 .codex/tmp/
 .codex/log/
 .codex/shell_snapshots/
 .codex/archived_sessions/
+.codex/vendor_imports/
 
 # OS/editor
 .DS_Store

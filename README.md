@@ -1,124 +1,73 @@
 # codex-frontend-pnp
 
-Production-ready, plug-and-play Codex setup for frontend engineers.
+Very easy clone-and-play Codex setup for frontend engineering.
 
-## What This Gives You
-
-- Managed skills in official project layout: `.agents/skills/`
-- Safe default user config: `.codex/config.toml`
-- Hardened command approval baseline: `.codex/rules/default.rules`
-- One-command installer: `scripts/setup-codex.sh`
-- Post-install safety audit: `scripts/audit-codex.sh`
-
-## One-Command Setup
+## Quick Start
 
 ```bash
-bash scripts/setup-codex.sh
+git clone https://github.com/amalimm/codex-frontend-pnp.git
+cd codex-frontend-pnp
+export CONTEXT7_API_KEY="<your-key>"   # optional but recommended
+bash scripts/clone-play.sh
 ```
 
-What the setup script does:
+That is it. The script installs this repo into `~/.codex`, runs a safety audit, and prints next steps.
 
-1. Backs up existing `~/.codex` config/rules/skills into `~/.codex/backups/<timestamp>/`
-2. Installs this repo's config and rules into `~/.codex/`
-3. Installs managed skills into `~/.codex/skills/`
+## What Gets Installed
 
-Script options:
+- `.codex/config.toml` -> `~/.codex/config.toml`
+- `.codex/rules/default.rules` -> `~/.codex/rules/default.rules`
+- `.codex/skills/*` -> `~/.codex/skills/*`
 
-- `--dry-run`: preview actions without changes
-- `--no-backup`: skip backup step
+Before overwrite, existing local config/rules/skills are backed up to:
 
-## Safety Defaults
+- `~/.codex/backups/<timestamp>/`
 
-Installed config defaults:
+## Repo Structure (Matches Local Layout)
 
-- `approval_policy = "on-request"`
-- `sandbox_mode = "workspace-write"`
-- Context7 MCP configured and pinned to `@upstash/context7-mcp@2.1.2`
+- `.codex/config.toml`
+- `.codex/rules/default.rules`
+- `.codex/skills/`
+- `scripts/clone-play.sh`
+- `scripts/setup-codex.sh`
+- `scripts/audit-codex.sh`
 
-Installed rules defaults:
+## Safety Rules
 
-- Read-only commands are `allow`
-- Shell wrappers, package managers, and mutating commands are `prompt`
-- Explicitly guarded: `rm -rf`, `rm -f`, `bash -lc`, package install tools
+This repo intentionally does **not** track local runtime/private files such as:
 
-Run safety verification:
+- `auth.json`, `history.jsonl`, `models_cache.json`
+- `state_*.sqlite*`, logs, sessions, tmp, shell snapshots, archived sessions
+
+The audit script also checks for hardcoded key patterns in tracked `.codex` files.
+
+Run manually anytime:
 
 ```bash
 bash scripts/audit-codex.sh
 ```
 
-## Included Managed Skills
+## Update Flow
 
-- `context7-library-refs`
-- `conventional-commits`
-- `frontend-testing`
-- `general-coding-standards`
-- `payload-cms`
-- `planning-with-files`
-- `project-stack-selector`
-- `react-best-practices`
-- `react-code-fix-linter`
-- `seo-review`
-- `ui-ux-pro-max`
-- `web-design-guidelines`
+```bash
+cd codex-frontend-pnp
+git pull
+bash scripts/clone-play.sh
+```
 
-## Recommended Add-Ons To Install
-
-Curated skills:
+## Optional Frontend Add-Ons
 
 - `playwright`
 - `figma`
 - `figma-implement-design`
-- `gh-fix-ci`
-- `gh-address-comments`
 - `openai-docs`
 - `sentry`
 - `linear`
-- Choose deploy workflow: `vercel-deploy` or `netlify-deploy` or `cloudflare-deploy`
 
-Install example:
+Example:
 
 ```text
 $skill-installer playwright
 $skill-installer figma
 $skill-installer sentry
 ```
-
-MCP add-ons for frontend workflows:
-
-- `codex mcp add playwright -- npx @playwright/mcp@latest`
-- `codex mcp add chrome-devtools -- npx -y chrome-devtools-mcp@latest`
-- `codex mcp add figma --url https://mcp.figma.com/mcp`
-- `codex mcp add linear --url https://mcp.linear.app/mcp`
-
-Optional:
-
-- Storybook MCP (`@storybook/addon-mcp`, endpoint `http://localhost:6006/mcp`)
-- Netlify MCP (`codex mcp add netlify -- npx -y @netlify/mcp`)
-- GitHub MCP (official remote/local options)
-- Sentry MCP (`https://mcp.sentry.dev`)
-
-Pencil MCP remains intentionally excluded.
-
-## Repo Layout
-
-- `.agents/skills/`
-- `.codex/config.toml`
-- `.codex/rules/default.rules`
-- `scripts/setup-codex.sh`
-- `scripts/audit-codex.sh`
-- `.gitignore`
-- `README.md`
-
-## Sources
-
-- https://developers.openai.com/codex/skills
-- https://developers.openai.com/codex/mcp/
-- https://developers.openai.com/codex/config-reference
-- https://github.com/openai/skills/tree/main/skills/.curated
-- https://github.com/microsoft/playwright-mcp
-- https://github.com/ChromeDevTools/chrome-devtools-mcp
-- https://developers.figma.com/docs/figma-mcp-server/remote-server-installation/
-- https://linear.app/integrations/codex-mcp
-- https://github.com/github/github-mcp-server
-- https://github.com/getsentry/sentry-mcp
