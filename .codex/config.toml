@@ -1,0 +1,29 @@
+# Plug-and-play Codex config for frontend workflows.
+# Installed to ~/.codex/config.toml by scripts/setup-codex.sh.
+
+model = "gpt-5.3-codex"
+model_reasoning_effort = "high"
+personality = "pragmatic"
+
+# Safe execution defaults.
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+
+[sandbox_workspace_write]
+network_access = true
+
+# Docs MCP (official package: @upstash/context7-mcp)
+[mcp_servers.context7]
+command = "npx"
+args = ["-y", "@upstash/context7-mcp@2.1.2"]
+enabled = true
+required = false
+startup_timeout_sec = 20
+tool_timeout_sec = 60
+
+[mcp_servers.context7.env]
+CONTEXT7_API_KEY = "${CONTEXT7_API_KEY}"
+
+# Example trusted project entries:
+# [projects."/absolute/path/to/your/project"]
+# trust_level = "trusted"

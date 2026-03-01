@@ -1,71 +1,82 @@
 # codex-frontend-pnp
 
-Portable Codex frontend setup. Clone this repo and start with repo-local skills using the official Codex project structure.
+Production-ready, plug-and-play Codex setup for frontend engineers.
 
-Checked against official docs on March 1, 2026.
+## What This Gives You
 
-## Official Structure
+- Managed skills in official project layout: `.agents/skills/`
+- Safe default user config: `.codex/config.toml`
+- Hardened command approval baseline: `.codex/rules/default.rules`
+- One-command installer: `scripts/setup-codex.sh`
+- Post-install safety audit: `scripts/audit-codex.sh`
 
-This repo follows the Codex skill layout:
-
-- `.agents/skills/<skill-name>/SKILL.md` (required)
-- Optional skill folders: `references/`, `scripts/`, `assets/`
-
-Template user config is kept separately:
-
-- `.codex/config.template.toml` (safe template)
-- `.codex/rules/default.rules` (optional local approval baseline)
-
-## Included Skills
-
-- `context7-library-refs`: doc-grounded library/framework API usage
-- `conventional-commits`: structured Conventional Commits
-- `frontend-testing`: Vitest + RTL testing workflows
-- `general-coding-standards`: baseline coding quality standards
-- `payload-cms`: Payload CMS implementation/debug patterns
-- `planning-with-files`: file-based planning for complex tasks
-- `project-stack-selector`: modern React/TS stack selection
-- `react-best-practices`: Vercel React/Next performance rules
-- `react-code-fix-linter`: lint/format cleanup flow
-- `seo-review`: SEO audits for docs/content pages
-- `ui-ux-pro-max`: UI/UX design/build guidance
-- `web-design-guidelines`: UI/accessibility guideline review
-
-## Quick Start
-
-1. Clone the repo and work from this project.
-2. Repo-local skills under `.agents/skills` are available automatically in this project context.
-3. (Optional) copy template config into your user config:
+## One-Command Setup
 
 ```bash
-mkdir -p ~/.codex/rules
-cp .codex/rules/default.rules ~/.codex/rules/default.rules
-cp .codex/config.template.toml ~/.codex/config.toml
+bash scripts/setup-codex.sh
 ```
 
-If `~/.codex/config.toml` already exists, merge manually instead of overwriting.
+What the setup script does:
 
-4. Set required environment values (example):
+1. Backs up existing `~/.codex` config/rules/skills into `~/.codex/backups/<timestamp>/`
+2. Installs this repo's config and rules into `~/.codex/`
+3. Installs managed skills into `~/.codex/skills/`
+
+Script options:
+
+- `--dry-run`: preview actions without changes
+- `--no-backup`: skip backup step
+
+## Safety Defaults
+
+Installed config defaults:
+
+- `approval_policy = "on-request"`
+- `sandbox_mode = "workspace-write"`
+- Context7 MCP configured and pinned to `@upstash/context7-mcp@2.1.2`
+
+Installed rules defaults:
+
+- Read-only commands are `allow`
+- Shell wrappers, package managers, and mutating commands are `prompt`
+- Explicitly guarded: `rm -rf`, `rm -f`, `bash -lc`, package install tools
+
+Run safety verification:
 
 ```bash
-export CONTEXT7_API_KEY="<your-context7-key>"
+bash scripts/audit-codex.sh
 ```
 
-## Frontend Add-Ons (Curated Skills)
+## Included Managed Skills
 
-Recommended installs from `openai/skills` curated catalog:
+- `context7-library-refs`
+- `conventional-commits`
+- `frontend-testing`
+- `general-coding-standards`
+- `payload-cms`
+- `planning-with-files`
+- `project-stack-selector`
+- `react-best-practices`
+- `react-code-fix-linter`
+- `seo-review`
+- `ui-ux-pro-max`
+- `web-design-guidelines`
+
+## Recommended Add-Ons To Install
+
+Curated skills:
 
 - `playwright`
 - `figma`
 - `figma-implement-design`
 - `gh-fix-ci`
 - `gh-address-comments`
+- `openai-docs`
 - `sentry`
 - `linear`
-- `openai-docs`
-- Pick one deploy skill: `vercel-deploy` or `netlify-deploy` or `cloudflare-deploy`
+- Choose deploy workflow: `vercel-deploy` or `netlify-deploy` or `cloudflare-deploy`
 
-Install examples:
+Install example:
 
 ```text
 $skill-installer playwright
@@ -73,30 +84,29 @@ $skill-installer figma
 $skill-installer sentry
 ```
 
-## MCP Recommendations (Frontend)
+MCP add-ons for frontend workflows:
 
-Core:
-
-- `context7`: `codex mcp add context7 -- npx -y @upstash/context7-mcp`
-- `playwright`: `codex mcp add playwright -- npx @playwright/mcp@latest`
-- `chrome-devtools`: `codex mcp add chrome-devtools -- npx -y chrome-devtools-mcp@latest`
-- `figma` (remote): `codex mcp add figma --url https://mcp.figma.com/mcp`
-- `linear` (remote): `codex mcp add linear --url https://mcp.linear.app/mcp`
+- `codex mcp add playwright -- npx @playwright/mcp@latest`
+- `codex mcp add chrome-devtools -- npx -y chrome-devtools-mcp@latest`
+- `codex mcp add figma --url https://mcp.figma.com/mcp`
+- `codex mcp add linear --url https://mcp.linear.app/mcp`
 
 Optional:
 
 - Storybook MCP (`@storybook/addon-mcp`, endpoint `http://localhost:6006/mcp`)
 - Netlify MCP (`codex mcp add netlify -- npx -y @netlify/mcp`)
-- Sentry MCP
-- GitHub MCP
+- GitHub MCP (official remote/local options)
+- Sentry MCP (`https://mcp.sentry.dev`)
 
-Pencil MCP is intentionally skipped for now.
+Pencil MCP remains intentionally excluded.
 
-## Project Layout
+## Repo Layout
 
 - `.agents/skills/`
-- `.codex/config.template.toml`
+- `.codex/config.toml`
 - `.codex/rules/default.rules`
+- `scripts/setup-codex.sh`
+- `scripts/audit-codex.sh`
 - `.gitignore`
 - `README.md`
 
@@ -104,10 +114,11 @@ Pencil MCP is intentionally skipped for now.
 
 - https://developers.openai.com/codex/skills
 - https://developers.openai.com/codex/mcp/
+- https://developers.openai.com/codex/config-reference
 - https://github.com/openai/skills/tree/main/skills/.curated
 - https://github.com/microsoft/playwright-mcp
 - https://github.com/ChromeDevTools/chrome-devtools-mcp
-- https://github.com/storybookjs/mcp
-- https://developers.figma.com/docs/figma-mcp-server
+- https://developers.figma.com/docs/figma-mcp-server/remote-server-installation/
 - https://linear.app/integrations/codex-mcp
-- https://docs.netlify.com/welcome/build-with-ai/netlify-mcp-server/
+- https://github.com/github/github-mcp-server
+- https://github.com/getsentry/sentry-mcp
